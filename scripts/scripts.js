@@ -91,9 +91,18 @@ const miloLibs = setLibs(LIBS);
   });
 }());
 
-(async function loadPage() {
+async function loadPage() {
   const { loadArea, setConfig } = await import(`${miloLibs}/utils/utils.js`);
   const config = setConfig({ ...CONFIG, miloLibs });
   console.log(config);
   await loadArea();
+}
+
+loadPage();
+
+// DA Live Preview
+(async function loadDa() {
+  if (!new URL(window.location.href).searchParams.get('dapreview')) return;
+  // eslint-disable-next-line import/no-unresolved
+  import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
 }());
